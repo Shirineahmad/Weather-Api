@@ -2,14 +2,10 @@
 margin: 0;
 padding: 0;
 box-sizing: border-box;
-
-
-
-
 }
 body{
     font-family:'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
--webkit-font-smoothing:antialiased;
+
 }
 .weather{
     display: flex;
@@ -61,4 +57,44 @@ img{
 }
 .cityName{
     font-size: 5rem;
+}
+/* Reset some default styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the search container */
+.search-container {
+    display: flex;
+    justify-content: left;
+    width: 300px;
+    border-bottom: 1px solid #fff; /* White line under the input field */
+}
+
+/* Style the search icon */
+.search-icon img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Style the search text */
+.search-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style the search input */
+#search-input {
+    width: 53%;
+    border: none;
+    outline: none;
+    padding: 0; /* Remove padding to hide cursor */
+    font-size: 16px;
+    background-color: transparent; /* Remove input background */
+    color: #333; /* Text color */
+    border-bottom: 0.5px solid #333; /* Add a border under the input */
 }
