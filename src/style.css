@@ -1,0 +1,41 @@
+.hourly-status-parent{
+    width: 600px;
+    color: #FFFFFF;
+    background-color: #62B8F6;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.hourly-status-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+}
+.hourly-status-child img{
+    width: 74px;
+    height: 65px;
+}
+@media screen and (min-width: 360px) and (max-width: 428px) {
+    
+    .hourly-status-parent{
+        width: 360px;
+        height: 800px;
+        color: #FFFFFF;
+        background-color: #62B8F6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hourly-status-child{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width:fit-content;
+        font-size: 40px;
+    }
+    .hourly-status-child img{
+        width: 100px;
+        height: 85px;
+    }
+}
