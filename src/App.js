@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import search from "./weather-icons/search-interface-symbol_54481.png";
 import humidity1 from "./weather-icons/humidity.png";
@@ -11,6 +11,7 @@ function App() {
   const [temperature, setTemperature] = useState("");
   const [humidity, setHumidity] = useState("");
   const [pressure, setPressure] = useState("");
+  const [hourlyTemperatures, setHourlyTemperatures] = useState([]);
 
   const handleChange = (event) => {
     setCity(event.target.value);
@@ -22,6 +23,30 @@ function App() {
       fetchWeatherData();
     }
   };
+
+  useEffect(() => {
+    const fetchHourlyTemperatures = async () => {
+      const apiKey = "5460b9677952ffc4b8817063a12390de"; // Replace with your OpenWeatherMap API key
+      const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const hourlyData = data.list.filter((entry) =>
+          entry.dt_txt.includes("12:00:00")
+        );
+
+        const hourlyTemps = hourlyData.map((entry) => entry.main.temp);
+        setHourlyTemperatures(hourlyTemps);
+      } catch (error) {
+        console.error("Error fetching hourly data:", error);
+      }
+    };
+
+    if (city !== "") {
+      fetchHourlyTemperatures();
+    }
+  }, [city]);
 
   const fetchWeatherData = () => {
     const apiKey = "6c81cf6fc38f4a4ef1128949a51ac417";
@@ -35,7 +60,7 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log(data); // Add this line to inspect the response data
+        console.log(data);
         setTemperature(data.main.temp);
         setHumidity(data.main.humidity);
         setPressure(data.main.pressure);
@@ -71,7 +96,7 @@ function App() {
         </div>
         <div className="content">
           <div className="weather-info1">
-            <img src={sun} className="img-weather" />
+            <img src={sun} className="img-weather" alt="Sun Icon" />
             <h3 className="degree">{temperature} °C</h3>
           </div>
 
@@ -89,13 +114,13 @@ function App() {
       </div>
 
       <div className="hourly-status-parent">
-        {[0, 3, 6, 9, 12, 15, 18].map((hour) => (
-          <div key={hour} className="hourly-status-child">
-            <div>{`${hour.toString().padStart(2, "0")}:00`}</div>
+        {[6, 9, 12, 3, 6, 9, 12].map((hour, index) => (
+          <div key={index} className="hourly-status-child">
+            <div>{`${hour.toString().padStart(2, "0")}:00${hour >= 12 ? "PM" : "AM"}`}</div>
             <div>
               <img src={clear} alt="" />
             </div>
-            <div>{`${temperature} °C`}</div>
+            <div>{`${hourlyTemperatures[index]}°C`}</div>
           </div>
         ))}
       </div>
