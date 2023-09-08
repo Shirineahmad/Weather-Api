@@ -61,7 +61,7 @@ function App() {
       })
       .then((data) => {
         console.log(data);
-        setTemperature(data.main.temp);
+        setTemperature(Math.round(data.main.temp));
         setHumidity(data.main.humidity);
         setPressure(data.main.pressure);
       })
@@ -114,16 +114,22 @@ function App() {
       </div>
 
       <div className="hourly-status-parent">
-        {[6, 9, 12, 3, 6, 9, 12].map((hour, index) => (
-          <div key={index} className="hourly-status-child">
-            <div>{`${hour.toString().padStart(2, "0")}:00${hour >= 12 ? "PM" : "AM"}`}</div>
-            <div>
-              <img src={clear} alt="" />
-            </div>
-            <div>{`${hourlyTemperatures[index]}°C`}</div>
-          </div>
-        ))}
+  {[6, 9, 12, 15, 18].slice(0, 6 ).map((hour, index) => {
+    const roundedTemperature = Math.round(hourlyTemperatures[index]);
+
+    return (
+      <div key={index} className="hourly-status-child">
+        <div>{`${hour.toString().padStart(2, "0")}:00${hour >= 21 ? "PM" : "AM"}`}</div>
+        <div>
+          <img src={clear} alt="" />
+        </div>
+        <div>{`${roundedTemperature}°C`}</div>
       </div>
+    );
+  })}
+</div>
+
+
     </div>
   );
 }
