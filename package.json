@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "weather-api",
-=======
-  "name": "weather-project",
->>>>>>> final
   "version": "0.1.0",
   "private": true,
   "dependencies": {
