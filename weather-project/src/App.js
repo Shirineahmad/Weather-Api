@@ -89,7 +89,7 @@ const handleClick=(event)=>{
   }
 fetchWeatherData();
   return (
-    <div class='big-one'>
+  
     <div class="weather-container">
     <div class="search-container">
         <div class="search-icon">
@@ -135,7 +135,7 @@ fetchWeatherData();
       ))}
     </div>
     </div>
-    </div>
+    
   );
 }
 
