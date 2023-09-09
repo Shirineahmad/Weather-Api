@@ -1,0 +1,33 @@
+
+
+.slide {
+    width: 500px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.5s ;
+     
+            flex-direction: column;
+          
+    
+}
+.slide img{
+    width: 74px;
+        height: 65px;
+    
+}
+
+.active {
+    transition: transform 0.5s ease;
+    /* You can adjust the scaling effect for the active slide */
+}
+/*  */
+.carousel {
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
