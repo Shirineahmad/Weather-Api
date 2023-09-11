@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+ 
 }
 body {
   box-sizing: border-box;
@@ -12,6 +13,8 @@ body {
     align-items: center;
     border-radius: 30px;
     justify-content: center;
+    height: 99vh;
+     background-image: url("./back.jpg");
 }
 /* .big-one {
   display: flex;
@@ -21,7 +24,7 @@ body {
 } */
 .weather-container {
   color: #ffffff;
-  background-color: #62b8f6;
+  background-color: #037dd1;
   height: 570px;
   width: 630px;
   border-radius: 46px;
@@ -88,6 +91,8 @@ img {
   justify-content: left;
   width: 300px;
   padding-left: 15px;
+  color: white;
+
 }
 hr {
 
@@ -119,6 +124,9 @@ hr {
   background-color: transparent; /* Remove input background */
   color: #333; /* Text color */
   border-bottom: 0.5px solid #333; /* Add a border under the input */
+}
+#search-input::placeholder{
+  color: #ffffff;
 }
 .hourly-status-parent {
   width: 600px;

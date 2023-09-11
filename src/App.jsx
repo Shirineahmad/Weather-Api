@@ -10,18 +10,21 @@ import storm from './storm.svg';
 import search from './search-interface-symbol_54481.png';
 import humidity from './humidity.png';
 import wind from './wind.png';
-import {useState} from "react";
+import back from "./back.jpg"
+import {useState, useEffect} from "react";
 import './App.css';
 function App() {
-  const [cityName,setCityName]=useState("Baalbeck");
-  const [weatherStatus,setWheatherStatus]=useState("cloudy");
-  const [Humidity,setHumidity]=useState(65);
-  const [degre,setDegre]=useState(19);
-  const [pressure,setPressure]=useState(31+"km/h");
-  const [forecastData, setForecastData] = useState([]);
-  const [i,setIcon]=useState(clear);
-const handleClick=(event)=>{
+    const [cityName, setCityName] = useState("Baalbeck");
+    const [forecastData, setForecastData] = useState([]);
+    const [data, setData] = useState([]);
+    const [error, setError] = useState(null);
+    const [doIt, setDo] = useState(true);
+
+const handleChange=(event)=>{
   setCityName(event.target.value);
+  }
+  const handlePress=(event)=>{
+  if(event.key==="Enter")fetchData();  
 }
   function getWeatherIcon(conditionCode)  {
 
@@ -56,86 +59,135 @@ const handleClick=(event)=>{
 
   }
 
-  async function fetchWeatherData() {
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=11a8b3654238eacc78180f3e05e63e9a`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setWheatherStatus(data.list[0].weather[0].main);
-      setHumidity(data.list[0].main.humidity);
-      setDegre(parseInt( data.list[0].main.temp-270));
-      setPressure(data.list[0].wind.speed);
-     const theForecast=[
-       {icon:getWeatherIcon(data.list[0].weather[0].id),hour:new Date(data.list[0].dt_txt ).getHours()+":00",temp:data.list[0].main.temp},
-       {icon:getWeatherIcon(data.list[1].weather[0].id),hour:new Date(data.list[1].dt_txt ).getHours()+":00",temp:data.list[1].main.temp},
-       {icon:getWeatherIcon(data.list[2].weather[0].id),hour:new Date(data.list[2].dt_txt ).getHours()+":00",temp:data.list[2].main.temp},
-       {icon:getWeatherIcon(data.list[3].weather[0].id),hour:new Date(data.list[3].dt_txt ).getHours()+":00",temp:data.list[3].main.temp},
-       {icon:getWeatherIcon(data.list[4].weather[0].id),hour:new Date(data.list[4].dt_txt ).getHours()+":00",temp:data.list[4].main.temp},
-       {icon:getWeatherIcon(data.list[5].weather[0].id),hour:new Date(data.list[5].dt_txt ).getHours()+":00",temp:data.list[5].main.temp},
-       {icon:getWeatherIcon(data.list[6].weather[0].id),hour:new Date(data.list[6].dt_txt ).getHours()+":00",temp:data.list[6].main.temp}
-      ];
-      setForecastData(theForecast);   
-      setIcon(getWeatherIcon(data.list[0].weather[0].id)); 
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-fetchWeatherData();
+ function fetchData() {
+   fetch(
+     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=11a8b3654238eacc78180f3e05e63e9a`
+   )
+     .then((response) => {
+       if (!response.ok) {
+         throw new Error("Network response was not ok");
+       }
+       return response.json();
+     })
+     .then((data) => {
+       setData(data);
+       const theForecast = [
+         {
+           icon: getWeatherIcon(data.list[0].weather[0].id),
+           hour: new Date(data.list[0].dt_txt).getHours() + ":00",
+           temp: data.list[0].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[1].weather[0].id),
+           hour: new Date(data.list[1].dt_txt).getHours() + ":00",
+           temp: data.list[1].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[2].weather[0].id),
+           hour: new Date(data.list[2].dt_txt).getHours() + ":00",
+           temp: data.list[2].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[3].weather[0].id),
+           hour: new Date(data.list[3].dt_txt).getHours() + ":00",
+           temp: data.list[3].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[4].weather[0].id),
+           hour: new Date(data.list[4].dt_txt).getHours() + ":00",
+           temp: data.list[4].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[5].weather[0].id),
+           hour: new Date(data.list[5].dt_txt).getHours() + ":00",
+           temp: data.list[5].main.temp,
+         },
+         {
+           icon: getWeatherIcon(data.list[6].weather[0].id),
+           hour: new Date(data.list[6].dt_txt).getHours() + ":00",
+           temp: data.list[6].main.temp,
+         },
+       ];
+       setForecastData(theForecast);
+     })
+     .catch((err) => {
+       setError(err.message);
+       setCityName("Baalbeck");
+       setDo(!doIt);
+       console.log(cityName);
+       //fetchData();
+     });
+ }
+ useEffect(() => {
+   fetchData();
+ }, [doIt]);
   return (
-  
-    <div class="weather-container">
-    <div class="search-container">
-        <div class="search-icon">
-            <img src={search} alt="Search Icon"/>
+    <div className="weather-container">
+      <div className="search-container">
+        <div className="search-icon">
+          <img src={search} alt="Search Icon" />
         </div>
-        <div class="search-text">
-            <input onChange={handleClick} type="text" id="search-input" placeholder="Weather in your city "/>
-            <div class="underscore"></div>
+        <div className="search-text">
+          <input
+            onKeyPress={handlePress}
+            onChange={handleChange}
+            type="text"
+            id="search-input"
+            placeholder="Weather in your city "
+          />
+          <div className="underscore"></div>
         </div>
-    </div>
-    <div class="weather">
-       <div class="weather-info">
-        <h1 class="cityName">{cityName}</h1>
-        <h2 class="weather-hala">{weatherStatus}</h2>
+      </div>
+      <div className="weather">
+        <div className="weather-info">
+          <h1 className="cityName">{cityName}</h1>
+          {data.list !== undefined && (
+            <h2 className="weather-hala">{data.list[0].weather[0].main}</h2>
+          )}
         </div>
-        <div class="content">
-            <div class="weather-info1">
-        <img src={i} class="img-weather"/>
-        <h3 class="degree">{degre} &deg;C</h3>
-        </div>
-    <div class="weather-info2">
-        <div class="humdatity">
-            <img src={humidity}/>
-            <h3>Humidity: {Humidity}%</h3>
-        </div>
-        <div class="presure">
-            <img src={wind}/>
-            <h3>wind: {pressure} </h3>
-        </div>
-    </div>
-    </div>
-    </div>
-    <hr></hr>
-    <div className="hourly-status-parent">
-      {forecastData.map((x, index) => (
-        <div className="hourly-status-child" key={index}>
-          <div>{x.hour}</div>
-          <div>
-            <img src={x.icon}  />
+        <div className="content">
+          <div className="weather-info1">
+            {data.list !== undefined && (
+              <img
+                src={getWeatherIcon(data.list[0].weather[0].id)}
+                className="img-weather"
+              />
+            )}
+            {data.list !== undefined && (
+              <h3 className="degree">
+                {parseInt(data.list[0].main.temp - 270)} &deg;C
+              </h3>
+            )}
           </div>
-          <div>{parseInt(x.temp-273.15)}&deg;C</div>
+          <div className="weather-info2">
+            <div className="humdatity">
+              <img src={humidity} />
+              {data.list !== undefined && (
+                <h3>Humidity: {data.list[0].main.humidity}%</h3>
+              )}
+            </div>
+            <div className="presure">
+              <img src={wind} />
+              {data.list !== undefined && (
+                <h3>wind: {parseInt(data.list[0].wind.speed)} </h3>
+              )}
+            </div>
+          </div>
         </div>
-      ))}
+      </div>
+      <hr></hr>
+      <div className="hourly-status-parent">
+        {forecastData.map((x, index) => (
+          <div className="hourly-status-child" key={index}>
+            <div>{x.hour}</div>
+            <div>
+              <img src={x.icon} />
+            </div>
+            <div>{parseInt(x.temp - 273.15)}&deg;C</div>
+          </div>
+        ))}
+      </div>
     </div>
-    </div>
-    
   );
 }
 
